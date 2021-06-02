@@ -1,7 +1,7 @@
 // program to reneder "stonehenge".
 // ストーンヘンジを描画するプログラムです。
 
-// 2021/06/03
+// 2021/06/03 
 
 
 void setup() {
