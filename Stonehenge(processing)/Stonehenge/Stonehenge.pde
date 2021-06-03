@@ -1,9 +1,9 @@
 // program to reneder "stonehenge".
 // ストーンヘンジを描画するプログラムです。
 
-// 2021/06/03 
+// 2021/06/04 更新
 
-
+// 初期化
 void setup() {
   size(600, 600, P3D);    
   camera(25, -25, 25, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0);
@@ -12,37 +12,39 @@ void setup() {
   perspective(fov, float(width)/float(height), 1.0, 600.0);
 }
 
+// 描画関数
 void draw() {
-  // set the background color to white
+  // 背景を白に設定
   background(255); 
 
-  // render outer objects
+  // 外側の円状の岩を描画
   renderOutObject();
   
-  // renger innner object
+  // 内側の円状の岩を描画
   renderInnerObject();
   
-  // render center small box
-  translate(-1,1);       // change a piller's position
-  rotateZ(radians(45));  // rotateZ
-  box(1, 1, 2);          // put a outer piller.
+  // 中央の小さな岩を描画
+  translate(-1,1);       // 置くべき位置へ移動する
+  rotateZ(radians(45));  // z軸回転
+  box(1, 1, 2);          // 岩を描画
   
 }
 
+// 外側の円状の岩を描画
 void renderOutObject(){
-  int r = 12;          // The radius of the objects
-  float angle = radians(18);   // The chenge of the angle of the outer object.
+  int r = 12;                  // 半径
+  float angle = radians(18);   // 角度の変化量
  
-  int para = 0;     // The angle of the parameters of the outer objects.
+  int para = 0;     // 角度の変化に用いるパラメータ
  
-  float rotate_Z = 0;  // Angle of the z-axis rotation of the outer object.
-  float pil_trans_X = 0; // Movement of the x-coordinate of the pillar.
-  float pil_trans_Y = 0; // Movement of the y-coordinate of the pillar.
+  float rotate_Z = 0;    // z軸回転する角度
+  float pil_trans_X = 0; // 柱の動く量（x座標）
+  float pil_trans_Y = 0; // 柱の動く量（y座標）
   
-  float top_trans_X = 0; // Movement of the x-coordinate of the pillar.
-  float top_trans_Y = 0; // Movement of the y-coordinate of the pillar.
+  float top_trans_X = 0; // 柱に乗っている上の岩の動く量（x座標）
+  float top_trans_Y = 0; // 柱に乗っている上の岩の動く量（y座標）
   
-  float offset_top = radians(9); // offset for the top box
+  float offset_top = radians(9); // 柱に乗っている上の岩用の角度のオフセット
   
   for (float i = 0; i < 2.0*PI; i += PI/10.0 ) {
     rotate_Z = angle * para;
@@ -52,41 +54,42 @@ void renderOutObject(){
     top_trans_X  = r*cos(i+offset_top);
     top_trans_Y  = r*sin(i+offset_top);
 
-    // render the outer pillers
-    translate(pil_trans_X, pil_trans_Y);    // change a piller's position
-    rotateZ(rotate_Z);                  // rotateZ
-    box(1, 1, 3);                           // put a outer piller.
-    rotateZ(-rotate_Z);                 // rotateZ
-    translate(-pil_trans_X, -pil_trans_Y);  // change a piller's position
+    // 柱を描画する（最初の位置は原点）
+    translate(pil_trans_X, pil_trans_Y);    // 置くべき位置へ移動する
+    rotateZ(rotate_Z);                      // z軸回転
+    box(1, 1, 3);                           // 柱を描画
+    rotateZ(-rotate_Z);                     // z軸回転（元の向きへ戻る）
+    translate(-pil_trans_X, -pil_trans_Y);  // 置くべき位置へ移動する（元の位置へ戻る）
     
     
-    // render the outer boxes on the top of the outer pillers
-    translate(top_trans_X, top_trans_Y, 2);    // change a piller's position
-    rotateZ(rotate_Z+offset_top);          // rotateZ
-    rotateX(radians(90));                      // rotateX
-    box(1, 1, 3.5);                            // put a outer piller.
-    rotateX(-radians(90));                     // -rotateX
-    rotateZ(-rotate_Z-offset_top);         // -rotateZ
-    translate(-top_trans_X, -top_trans_Y, -2); // change a piller's position
+    // 柱に乗っている上の岩を描画する
+    translate(top_trans_X, top_trans_Y, 2);    // 置くべき位置へ移動する
+    rotateZ(rotate_Z+offset_top);              // z軸回転
+    rotateX(radians(90));                      // x軸回転
+    box(1, 1, 3.5);                            // 岩を描画
+    rotateX(-radians(90));                     // x軸回転（元の向きへ戻る）
+    rotateZ(-rotate_Z-offset_top);             // z軸回転（元の向きへ戻る）
+    translate(-top_trans_X, -top_trans_Y, -2); // 置くべき位置へ移動する（元の位置へ戻る）
     
     para++;
   }
 }
 
+// 内側の円状の岩を描画
 void renderInnerObject(){
-  int r = 6;          // The radius of the pillers
-  float angle = radians(30);   // The chenge of the angle of the object.
+  int r = 6;                   // 半径
+  float angle = radians(30);   // 角度の変化量
  
-  int para = 0;     // The angle of the parameters of the outer objects.
+  int para = 0;     // 角度の変化に用いるパラメータ
  
-  float rotate_Z = 0;  // Angle of the z-axis rotation of the outer object.
-  float pil_trans_X = 0; // Movement of the x-coordinate of the pillar.
-  float pil_trans_Y = 0; // Movement of the y-coordinate of the pillar.
+  float rotate_Z = 0;    // z軸回転する角度
+  float pil_trans_X = 0; // 柱の動く量（x座標）
+  float pil_trans_Y = 0; // 柱の動く量（y座標）
   
-  float top_trans_X = 0; // Movement of the x-coordinate of the pillar.
-  float top_trans_Y = 0; // Movement of the y-coordinate of the pillar.
+  float top_trans_X = 0; // 柱に乗っている上の岩の動く量（x座標）
+  float top_trans_Y = 0; // 柱に乗っている上の岩の動く量（y座標）
   
-  float offset_top = radians(15); // offset for the top box
+  float offset_top = radians(15); // 柱に乗っている上の岩用の角度のオフセット
   
   for (float i = 0; i < (3.0/2.0)*PI; i += PI/6.0 ) {
     
@@ -97,23 +100,23 @@ void renderInnerObject(){
       top_trans_X  = r*cos(i+offset_top);
       top_trans_Y  = r*sin(i+offset_top);
   
-      // render the pillers
-      translate(pil_trans_X, pil_trans_Y);    // change a piller's position
-      rotateZ(rotate_Z);                      // rotateZ
-      box(1, 1, 3);                           // put a piller.
-      rotateZ(-rotate_Z);                     // rotateZ
-      translate(-pil_trans_X, -pil_trans_Y);  // change a piller's position
+      // 柱を描画する（最初の位置は原点）
+      translate(pil_trans_X, pil_trans_Y);    // 置くべき位置へ移動する
+      rotateZ(rotate_Z);                      // z軸回転
+      box(1, 1, 3);                           // 柱を描画
+      rotateZ(-rotate_Z);                     // z軸回転（元の向きへ戻る）
+      translate(-pil_trans_X, -pil_trans_Y);  // 置くべき位置へ移動する（元の位置へ戻る）
       
-      // render the top box alternately
+      // 一つ置きに描画する
       if(para % 2 == 0){
-        // render the boxes on the top of the pillers
-        translate(top_trans_X, top_trans_Y, 2);    // change a top box's position
-        rotateZ(rotate_Z+offset_top);              // rotateZ
-        rotateX(radians(90));                     // rotateX
-        box(1, 1, 3);                              // put a top box.
-        rotateX(-radians(90));                     // -rotateX
-        rotateZ(-rotate_Z-offset_top);             // rotateZ
-        translate(-top_trans_X, -top_trans_Y, -2); // change a top box's position
+        // 柱に乗っている上の岩を描画する
+        translate(top_trans_X, top_trans_Y, 2);    // 置くべき位置へ移動する
+        rotateZ(rotate_Z+offset_top);              // z軸回転
+        rotateX(radians(90));                      // x軸回転
+        box(1, 1, 3);                              // 岩を描画
+        rotateX(-radians(90));                     // x軸回転（元の向きへ戻る）
+        rotateZ(-rotate_Z-offset_top);             // z軸回転（元の向きへ戻る）
+        translate(-top_trans_X, -top_trans_Y, -2); // 置くべき位置へ移動する（元の位置へ戻る）
       }
     para++;
   }
